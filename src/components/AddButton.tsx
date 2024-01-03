@@ -185,6 +185,27 @@ const TranslationInputList = ({ onAdd }: { onAdd: any }) => {
           ))}
         </select>
       </div>
+      <div className="my-6">
+        <ul>
+          <li className="mb-4">
+            <small>
+              If I want to confirm the accuracy of the German translation:
+              First, translate the original English text into German, then
+              translate the German back into Chinese. Compare the Chinese with
+              the original English to check if the meanings are consistent.
+            </small>
+          </li>
+          <li>
+            <small>
+              The system uses the `backLanguage` translations to verify the
+              accuracy and consistency of the `translatedText` with the original
+              English content. This iterative feedback loop aims to continuously
+              enhance the translation model for better accuracy and contextual
+              relevance in brand-related communications.
+            </small>
+          </li>
+        </ul>
+      </div>
       {isProcessing ? (
         <button
           className="mt-4 px-6 py-2 bg-gray-500 text-white font-semibold rounded-md hover:bg-gray-600 transition duration-300 w-full"

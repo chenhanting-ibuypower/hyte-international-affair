@@ -1,4 +1,5 @@
-import React from "react";
+import React, { useState } from "react";
+import { PaperAirplaneIcon } from "@heroicons/react/24/outline"; // New import path for v2
 
 type FeedbackTableProps = {
   data: {
@@ -14,6 +15,37 @@ type FeedbackTableProps = {
 };
 
 const FeedbackTable: React.FC<FeedbackTableProps> = ({ data }) => {
+  const [selectedQuality, setSelectedQuality] = useState(
+    data.reduce((acc, row) => {
+      // @ts-ignore
+      acc[row._id] = row.quality;
+      return acc;
+    }, {})
+  );
+  const [suggestion, setSuggestion] = useState(
+    data.reduce((acc, row) => {
+      // @ts-ignore
+      acc[row._id] = row.suggestion;
+      return acc;
+    }, {})
+  );
+
+  console.log("📝 suggestion", suggestion);
+
+  const handleIconClick = async (id: string) => {
+    console.log("current_id:", id);
+    // Make a request to your API endpoint to update the MongoDB instance
+    // const response = await fetch(`/api/updateFeedback/${id}`, {
+    //   method: "POST",
+    //   headers: { "Content-Type": "application/json" },
+    //   body: JSON.stringify({ quality: selectedQuality, suggestion }),
+    // });
+
+    // if (!response.ok) {
+    //   console.error("Error updating feedback");
+    // }
+  };
+
   return (
     <div>
       <style jsx>{`
@@ -137,10 +169,33 @@ const FeedbackTable: React.FC<FeedbackTableProps> = ({ data }) => {
                 >
                   <pre>{row.backLanguageContent}</pre>
                 </td>
-                <td className="cell">{row.quality}</td>
-                <td className="cell">{row.suggestion}</td>
+                <td>
+                  <select
+                    // @ts-ignore
+                    value={selectedQuality[row._id]}
+                  >
+                    {[...Array(10)].map((_, i) => (
+                      <option key={i} value={i + 1}>
+                        {i + 1}
+                      </option>
+                    ))}
+                  </select>
+                </td>
+                <td className="cell">
+                  <input
+                    type="text"
+                    // @ts-ignore
+                    value={suggestion[row._id] || ""}
+                    className="w-full px-2 py-1 border border-gray-300 rounded-md"
+                  />
+                </td>
                 <td className="cell text-right rounded-br-lg">
-                  <button className="edit-button">Action</button>
+                  <button
+                    className="edit-button"
+                    onClick={() => handleIconClick(row._id)}
+                  >
+                    <PaperAirplaneIcon className="h-5 w-5" />
+                  </button>
                 </td>
               </tr>
             ))}
