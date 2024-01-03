@@ -91,8 +91,15 @@ const FeedbackTable: React.FC<FeedbackTableProps> = ({ data }) => {
           overflow-wrap: break-word; // Added this line
         }
 
-        td {
-          word-wrap: break-word;
+        pre {
+          white-space: pre; /* CSS 2.0 */
+          white-space: pre-wrap; /* CSS 2.1 */
+          white-space: pre-line; /* CSS 3.0 */
+          white-space: -pre-wrap; /* Opera 4-6 */
+          white-space: -o-pre-wrap; /* Opera 7 */
+          white-space: -moz-pre-wrap; /* Mozilla */
+          white-space: -hp-pre-wrap; /* HP Printers */
+          word-wrap: break-word; /* IE 5+ */
         }
       `}</style>
       <div className="table-container">
@@ -112,18 +119,28 @@ const FeedbackTable: React.FC<FeedbackTableProps> = ({ data }) => {
             {data.map((row, index) => (
               <tr key={index} className="hover-effect">
                 <td
-                  className="cell rounded-bl-lg"
-                  // style={{ maxWidth: "400px" }}
+                  className="cell rounded-bl-lg max-w-xs break-words"
+                  style={{ maxWidth: "600px" }}
                 >
-                  <span>{row.original}</span>
+                  <pre>{row.original}</pre>
                 </td>
                 <td className="cell">{row.to}</td>
-                <td className="cell">{row.translatedText}</td>
-                <td className="cell">{row.backLanguageContent}</td>
+                <td
+                  className="cell rounded-bl-lg max-w-xs break-words"
+                  style={{ maxWidth: "600px" }}
+                >
+                  <pre>{row.translatedText}</pre>
+                </td>
+                <td
+                  className="cell rounded-bl-lg max-w-xs break-words"
+                  style={{ maxWidth: "600px" }}
+                >
+                  <pre>{row.backLanguageContent}</pre>
+                </td>
                 <td className="cell">{row.quality}</td>
                 <td className="cell">{row.suggestion}</td>
                 <td className="cell text-right rounded-br-lg">
-                  <button className="edit-button">Edit</button>
+                  <button className="edit-button">Action</button>
                 </td>
               </tr>
             ))}

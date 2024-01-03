@@ -3,6 +3,22 @@ import React, { useState } from "react";
 import { TrashIcon } from "@heroicons/react/24/outline"; // New import path for v2
 
 // "en-US", "en-GB", "es", "de", "fr", "pl", "it", "nl", "ko", "ja", "zh-TW", "zh-CN", and Portuguese ("pt")
+const localeNames = {
+  "en-US": "English (United States)",
+  "en-GB": "English (United Kingdom)",
+  es: "Spanish",
+  de: "German",
+  fr: "French",
+  pl: "Polish",
+  it: "Italian",
+  nl: "Dutch",
+  ko: "Korean",
+  ja: "Japanese",
+  "zh-TW": "Chinese (Traditional)",
+  "zh-CN": "Chinese (Simplified)",
+  pt: "Portuguese",
+};
+
 const locales = [
   "en-US",
   "en-GB",
@@ -150,7 +166,7 @@ const TranslationInputList = ({ onAdd }: { onAdd: any }) => {
         >
           {locales.map((locale) => (
             <option key={locale} value={locale}>
-              {locale}
+              {localeNames[locale as keyof typeof localeNames]}
             </option>
           ))}
         </select>
@@ -164,7 +180,7 @@ const TranslationInputList = ({ onAdd }: { onAdd: any }) => {
         >
           {locales.map((locale) => (
             <option key={locale} value={locale}>
-              {locale}
+              {localeNames[locale as keyof typeof localeNames]}
             </option>
           ))}
         </select>

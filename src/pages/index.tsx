@@ -23,6 +23,7 @@ const IndexPage = ({ translations }: { translations?: Array<object> }) => {
       const response = await fetch(`/api/translate?page=${pageNumber}`);
       const data = await response.json();
       console.log("📕 (API):", data);
+      
       setFeedbackData(data.documents);
       setEndIndex(data.endIndex);
       setTotalPages(data.totalPages);
