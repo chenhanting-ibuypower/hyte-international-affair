@@ -122,7 +122,7 @@ const TranslationInputList = ({ onAdd }: { onAdd: any }) => {
             <input
               type="text"
               value={row.value}
-              onChange={(e) => handleInputChange(e, index)}
+              onChange={(e) => handleInputChange(e.target.value, index)}
               className="border border-gray-300 p-2 rounded-md flex-grow shadow-sm"
               placeholder="Enter text"
             />
