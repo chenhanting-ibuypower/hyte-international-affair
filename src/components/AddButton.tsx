@@ -23,6 +23,7 @@ const TranslationInputList = ({ onAdd }: { onAdd: any }) => {
   const [rows, setRows] = useState([{ value: "" }]);
   const [locale, setLocale] = useState("en-US");
   const [backLanguage, setBackLanguage] = useState("en-US");
+  const [isProcessing, setIsProcessing] = useState(false);
 
   const addRow = () => {
     const newRow = { value: "" };
@@ -42,23 +43,37 @@ const TranslationInputList = ({ onAdd }: { onAdd: any }) => {
   };
 
   const handleTranslateAll = () => {
+    setIsProcessing(true);
     const formattedRows = rows
       .filter((row) => row.value !== "")
       .map((row) => row.value);
 
-    console.log("Translating all rows:", formattedRows);
     axios
       .post("https://hyte-support.azurewebsites.net/api/back-translate", {
-        locale: "ja",
-        backLanguage: "zh-TW",
+        locale,
+        backLanguage,
         content: formattedRows,
       })
-      .then((res) => {
-        console.log(res.data);
+      .then(async (res) => {
+        const payload = res.data;
+
+        const { data: insertedContent } = await axios.post("/api/translate", {
+          locale,
+          original: formattedRows,
+          backLanguage,
+          translatedText: payload.translatedText,
+          backLanguageContent: payload.backLanguage,
+        });
+
+        console.log(insertedContent);
+
         onAdd(res.data);
       })
       .catch((err) => {
         console.log(err);
+      })
+      .finally(() => {
+        setIsProcessing(false);
       });
   };
 
@@ -154,12 +169,21 @@ const TranslationInputList = ({ onAdd }: { onAdd: any }) => {
           ))}
         </select>
       </div>
-      <button
-        className="mt-4 px-6 py-2 bg-gray-500 text-white font-semibold rounded-md hover:bg-gray-600 transition duration-300 w-full"
-        onClick={handleTranslateAll}
-      >
-        TRANSLATE ALL
-      </button>
+      {isProcessing ? (
+        <button
+          className="mt-4 px-6 py-2 bg-gray-500 text-white font-semibold rounded-md hover:bg-gray-600 transition duration-300 w-full"
+          disabled
+        >
+          LOADING...
+        </button>
+      ) : (
+        <button
+          className="mt-4 px-6 py-2 bg-gray-500 text-white font-semibold rounded-md hover:bg-gray-600 transition duration-300 w-full"
+          onClick={handleTranslateAll}
+        >
+          TRANSLATE ALL
+        </button>
+      )}
     </div>
   );
 };
