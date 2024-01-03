@@ -10,7 +10,9 @@ export default async function handler(
   switch (method) {
     case "GET":
       try {
-        const client = new MongoClient(process.env.MONGODB_URL as string);
+        const client = new MongoClient(
+          process.env.COSMOSDB_CONNECTION_STRING as string
+        );
         await client.connect();
         const collection = client.db("localization").collection("translations");
         const { page = 1, limit = 10 } = req.query;
@@ -27,7 +29,9 @@ export default async function handler(
           .limit(Number(limit))
           .toArray();
 
-        res.status(200).json({ documents, endIndex, totalPages, totalDocuments });
+        res
+          .status(200)
+          .json({ documents, endIndex, totalPages, totalDocuments });
       } catch (error) {
         return res.status(500).json({ error: "Server error" });
       }
@@ -56,7 +60,9 @@ export default async function handler(
           });
         }
 
-        const client = new MongoClient(process.env.MONGODB_URL as string);
+        const client = new MongoClient(
+          process.env.COSMOSDB_CONNECTION_STRING as string
+        );
 
         await client.connect();
         const collection = client.db("localization").collection("translations");
