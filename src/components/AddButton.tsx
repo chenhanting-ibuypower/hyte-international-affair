@@ -1,8 +1,28 @@
+import axios from "axios";
 import React, { useState } from "react";
 import { TrashIcon } from "@heroicons/react/24/outline"; // New import path for v2
 
+// "en-US", "en-GB", "es", "de", "fr", "pl", "it", "nl", "ko", "ja", "zh-TW", "zh-CN", and Portuguese ("pt")
+const locales = [
+  "en-US",
+  "en-GB",
+  "es",
+  "de",
+  "fr",
+  "pl",
+  "it",
+  "nl",
+  "ko",
+  "ja",
+  "zh-TW",
+  "zh-CN",
+  "pt",
+];
+
 const TranslationInputList = ({ onAdd }: { onAdd: any }) => {
   const [rows, setRows] = useState([{ value: "" }]);
+  const [locale, setLocale] = useState("en-US");
+  const [backLanguage, setBackLanguage] = useState("en-US");
 
   const addRow = () => {
     const newRow = { value: "" };
@@ -22,18 +42,24 @@ const TranslationInputList = ({ onAdd }: { onAdd: any }) => {
   };
 
   const handleTranslateAll = () => {
-    // You would normally call a translation API here
-    // For demonstration purposes, we'll just log the current rows' content
-    console.log("Translating all rows:", rows);
+    const formattedRows = rows
+      .filter((row) => row.value !== "")
+      .map((row) => row.value);
 
-    // Example pseudo-code for translation API call
-    // translateAPI.translate(rows.map(row => row.value))
-    //   .then(translatedRows => {
-    //     // Handle the translated content
-    //   })
-    //   .catch(error => {
-    //     // Handle any errors
-    //   });
+    console.log("Translating all rows:", formattedRows);
+    axios
+      .post("https://hyte-support.azurewebsites.net/api/back-translate", {
+        locale: "ja",
+        backLanguage: "zh-TW",
+        content: formattedRows,
+      })
+      .then((res) => {
+        console.log(res.data);
+        onAdd(res.data);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
   };
 
   const handlePaste = (event: React.ClipboardEvent<HTMLTextAreaElement>) => {
@@ -99,6 +125,35 @@ const TranslationInputList = ({ onAdd }: { onAdd: any }) => {
         rows={5} // Adjust the number of rows as needed
       />
 
+      <div className="flex gap-4 items-center">
+        <label htmlFor="locale">Locale:</label>
+        <select
+          id="locale"
+          value={locale}
+          onChange={(e) => setLocale(e.target.value)}
+          className="border border-gray-300 p-2 rounded-md shadow-sm"
+        >
+          {locales.map((locale) => (
+            <option key={locale} value={locale}>
+              {locale}
+            </option>
+          ))}
+        </select>
+
+        <label htmlFor="backLanguage">Back Language:</label>
+        <select
+          id="backLanguage"
+          value={backLanguage}
+          onChange={(e) => setBackLanguage(e.target.value)}
+          className="border border-gray-300 p-2 rounded-md shadow-sm"
+        >
+          {locales.map((locale) => (
+            <option key={locale} value={locale}>
+              {locale}
+            </option>
+          ))}
+        </select>
+      </div>
       <button
         className="mt-4 px-6 py-2 bg-gray-500 text-white font-semibold rounded-md hover:bg-gray-600 transition duration-300 w-full"
         onClick={handleTranslateAll}
