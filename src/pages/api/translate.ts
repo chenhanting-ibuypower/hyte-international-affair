@@ -13,11 +13,16 @@ export default async function handler(
         const client = new MongoClient(
           process.env.COSMOSDB_CONNECTION_STRING as string
         );
-        await client.connect();
-        const collection = client.db("localization").collection("translations");
+
         const { page = 1, limit = 10 } = req.query;
         const startIndex = (Number(page) - 1) * Number(limit);
         const endIndex = Number(page) * Number(limit);
+        console.log("🖊️ The query params are:", { startIndex, endIndex });
+
+        await client.connect();
+        const collection = client.db("localization").collection("translations");
+
+        console.log("Check the collection:", collection);
 
         const totalDocuments = await collection.countDocuments();
         const totalPages = Math.ceil(totalDocuments / Number(limit));
@@ -29,6 +34,8 @@ export default async function handler(
           .limit(Number(limit))
           .toArray();
 
+        console.log("🖊️ The documents are:", documents);
+        
         res
           .status(200)
           .json({ documents, endIndex, totalPages, totalDocuments });
