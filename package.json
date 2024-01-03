@@ -17,6 +17,7 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "@heroicons/react": "^2.1.1",
     "axios": "latest",
     "next": "latest",
     "react": "latest",
