@@ -22,7 +22,7 @@ export default async function handler(
         await client.connect();
         const collection = client.db("localization").collection("translations");
 
-        console.log("Check the collection:", collection);
+        console.log("📃 Check the collection:", collection);
 
         const totalDocuments = await collection.countDocuments();
         const totalPages = Math.ceil(totalDocuments / Number(limit));
@@ -35,7 +35,7 @@ export default async function handler(
           .toArray();
 
         console.log("🖊️ The documents are:", documents);
-        
+
         res
           .status(200)
           .json({ documents, endIndex, totalPages, totalDocuments });
