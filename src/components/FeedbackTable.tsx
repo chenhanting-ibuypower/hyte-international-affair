@@ -2,12 +2,14 @@ import React from "react";
 
 type FeedbackTableProps = {
   data: {
-    originalContext: string;
-    targetLanguage: string;
-    translatedContext: string;
-    backTranslation: string;
-    quality: string;
-    suggestion: string;
+    _id: string;
+    original: string; // was originalContext
+    to: string; // was targetLanguage
+    translatedText: string; // was translatedContext
+    backLanguageContent: string; // was backTranslation
+    backLanguage: string;
+    quality?: string; // optional if not always present
+    suggestion?: string; // optional if not always present
   }[];
 };
 
@@ -71,6 +73,27 @@ const FeedbackTable: React.FC<FeedbackTableProps> = ({ data }) => {
         .rounded-br-lg {
           border-bottom-right-radius: 4px;
         }
+
+        .header {
+          padding: 6px;
+          text-align: left;
+          font-size: 12px;
+          font-weight: medium;
+          color: #555555;
+          text-transform: uppercase;
+        }
+
+        .cell {
+          padding: 6px;
+          white-space: nowrap;
+          font-size: 14px;
+          color: #333333;
+          overflow-wrap: break-word; // Added this line
+        }
+
+        td {
+          word-wrap: break-word;
+        }
       `}</style>
       <div className="table-container">
         <table className="table">
@@ -88,10 +111,15 @@ const FeedbackTable: React.FC<FeedbackTableProps> = ({ data }) => {
           <tbody className="bg-white divide-y divide-gray-200">
             {data.map((row, index) => (
               <tr key={index} className="hover-effect">
-                <td className="cell rounded-bl-lg">{row.originalContext}</td>
-                <td className="cell">{row.targetLanguage}</td>
-                <td className="cell">{row.translatedContext}</td>
-                <td className="cell">{row.backTranslation}</td>
+                <td
+                  className="cell rounded-bl-lg"
+                  // style={{ maxWidth: "400px" }}
+                >
+                  <span>{row.original}</span>
+                </td>
+                <td className="cell">{row.to}</td>
+                <td className="cell">{row.translatedText}</td>
+                <td className="cell">{row.backLanguageContent}</td>
                 <td className="cell">{row.quality}</td>
                 <td className="cell">{row.suggestion}</td>
                 <td className="cell text-right rounded-br-lg">
