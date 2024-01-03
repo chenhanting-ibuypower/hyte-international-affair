@@ -36,7 +36,7 @@ export default async function handler(
 
         console.log("🖊️ The documents are:", documents);
 
-        res
+        return res
           .status(200)
           .json({ documents, endIndex, totalPages, totalDocuments });
       } catch (error) {
