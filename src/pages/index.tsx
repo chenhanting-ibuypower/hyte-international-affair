@@ -3,13 +3,7 @@ import FeedbackTable from "../components/FeedbackTable";
 import AddButton from "../components/AddButton";
 import Pagination from "../components/Pagination";
 
-const IndexPage = ({
-  translations,
-  reload,
-}: {
-  translations?: Array<object>;
-  reload: () => void;
-}) => {
+const IndexPage = ({ translations }: { translations?: Array<object> }) => {
   console.log("📕 (Client Side):", translations);
   const [feedbackData, setFeedbackData] = useState([]);
   const [_, setEndIndex] = useState(0);

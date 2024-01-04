@@ -33,6 +33,16 @@ const FeedbackTable: React.FC<FeedbackTableProps> = ({ data, reload }) => {
     }, {})
   );
 
+  const reloadWithQualitiesAndSuggestions = async (id: number | string) => {
+    await reload();
+    const suggestionInput = document.querySelector(`#suggestion-${id}`);
+    const qualitySelect = document.querySelector(`#quality-${id}`);
+    if (suggestionInput && qualitySelect) {
+      (suggestionInput as HTMLInputElement).value = "";
+      (qualitySelect as HTMLSelectElement).value = "";
+    }
+  };
+
   const handleIconDelete = async (id: string) => {
     // Make a request to your API endpoint to update the MongoDB instance
     try {
@@ -44,7 +54,7 @@ const FeedbackTable: React.FC<FeedbackTableProps> = ({ data, reload }) => {
       alert("Error deleting feedback");
     } finally {
       // Reload the page
-      reload();
+      await reloadWithQualitiesAndSuggestions(id);
     }
   };
 
@@ -78,8 +88,9 @@ const FeedbackTable: React.FC<FeedbackTableProps> = ({ data, reload }) => {
       console.error("Error updating feedback:", error);
       alert("Error updating feedback");
     } finally {
+      console.log("Reloading...");
       // Reload the page
-      reload();
+      await reloadWithQualitiesAndSuggestions(id);
     }
   };
 
@@ -218,6 +229,7 @@ const FeedbackTable: React.FC<FeedbackTableProps> = ({ data, reload }) => {
                       // @ts-ignore
                       data.find((d) => d._id === row._id).quality || ""
                     }
+                    id={`quality-${row._id}`}
                     onChange={(e) =>
                       setSelectedQuality({
                         ...selectedQualities,
@@ -239,6 +251,7 @@ const FeedbackTable: React.FC<FeedbackTableProps> = ({ data, reload }) => {
                       // @ts-ignore
                       data.find((d) => d._id === row._id).suggestion
                     }
+                    id={`suggestion-${row._id}`}
                     className="w-full px-2 py-1 border border-gray-300 rounded-md"
                     onChange={(e) =>
                       setSuggestion({
@@ -251,13 +264,17 @@ const FeedbackTable: React.FC<FeedbackTableProps> = ({ data, reload }) => {
                 <td className="cell text-right rounded-br-lg">
                   <button
                     className="edit-button"
-                    onClick={() => handleIconClick(row._id)}
+                    onClick={() => {
+                      handleIconClick(row._id);
+                    }}
                   >
                     <PaperAirplaneIcon className="h-5 w-5" />
                   </button>
                   <button
                     className="edit-button"
-                    onClick={() => handleIconDelete(row._id)}
+                    onClick={() => {
+                      handleIconDelete(row._id);
+                    }}
                   >
                     <TrashIcon className="h-5 w-5" />
                   </button>

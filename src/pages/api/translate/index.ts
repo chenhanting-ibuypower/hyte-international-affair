@@ -22,8 +22,6 @@ export default async function handler(
 
         await client.connect();
         const collection = client.db("localization").collection("translations");
-        const totalDocuments = await collection.countDocuments();
-        const totalPages = Math.ceil(totalDocuments / Number(limit));
 
         const documents = await collection
           .find({ quality: { $ne: "", $exists: scored } })
@@ -31,6 +29,9 @@ export default async function handler(
           .skip(startIndex)
           .limit(Number(limit))
           .toArray();
+
+        const totalDocuments = documents.length;
+        const totalPages = Math.ceil(totalDocuments / Number(limit));
 
         if (scored) {
           return res.status(200).json({
