@@ -125,28 +125,33 @@ const TranslationInputList = ({ onAdd }: { onAdd: any }) => {
   };
   return (
     <div className="max-w-3xl mx-auto py-8">
-      <button
-        onClick={addRow}
-        className="mb-4 px-4 py-2 bg-blue-500 text-white font-semibold rounded-md hover:bg-blue-600 transition duration-300"
-      >
-        ADD
-      </button>
-
-      <div className="space-y-2">
-        {rows.map((row, index) => (
-          <div key={index} className="flex items-center gap-x-2">
-            <input
-              type="text"
-              value={row.value}
-              onChange={(e) => handleInputChange(e.target.value, index)}
-              className="border border-gray-300 p-2 rounded-md flex-grow shadow-sm"
-              placeholder="Enter text"
-            />
-            <button onClick={() => removeRow(index)} className="p-2">
-              <TrashIcon className="h-5 w-5 text-gray-600 hover:text-gray-800 transition duration-300" />
-            </button>
+      <div className="flex flex-col gap-4 items-center md:flex-row md:justify-between">
+        <div className="flex flex-col md:flex-row gap-4 items-center justify-end w-full">
+          {" "}
+          <button
+            onClick={addRow}
+            className="mb-4 px-4 py-2 bg-blue-500 text-white font-semibold rounded-md hover:bg-blue-600 transition duration-300"
+          >
+            ADD
+          </button>
+          <div className="space-y-2 w-full">
+            {rows.map((row, index) => (
+              <div key={index} className="flex items-center gap-x-2 w-full">
+                <input
+                  type="text"
+                  value={row.value}
+                  onChange={(e) => handleInputChange(e.target.value, index)}
+                  className="border border-gray-300 p-2 rounded-md flex-grow shadow-sm w-full"
+                  placeholder="Enter text"
+                  style={{ width: "100%" }} // Add this line to stretch the input field
+                />
+                <button onClick={() => removeRow(index)} className="p-2">
+                  <TrashIcon className="h-5 w-5 text-gray-600 hover:text-gray-800 transition duration-300" />
+                </button>
+              </div>
+            ))}
           </div>
-        ))}
+        </div>
       </div>
 
       <textarea
@@ -156,34 +161,39 @@ const TranslationInputList = ({ onAdd }: { onAdd: any }) => {
         rows={5} // Adjust the number of rows as needed
       />
 
-      <div className="flex gap-4 items-center">
-        <label htmlFor="locale">Locale:</label>
-        <select
-          id="locale"
-          value={locale}
-          onChange={(e) => setLocale(e.target.value)}
-          className="border border-gray-300 p-2 rounded-md shadow-sm"
-        >
-          {locales.map((locale) => (
-            <option key={locale} value={locale}>
-              {localeNames[locale as keyof typeof localeNames]}
-            </option>
-          ))}
-        </select>
+      <div className="flex flex-col gap-4 items-center md:flex-row md:justify-between">
+        <div className="flex flex-col md:flex-row gap-4 items-center justify-start">
+          <label htmlFor="locale">Locale:</label>
+          <select
+            id="locale"
+            value={locale}
+            onChange={(e) => setLocale(e.target.value)}
+            className="border border-gray-300 p-2 rounded-md shadow-sm"
+          >
+            {locales.map((locale) => (
+              <option key={locale} value={locale}>
+                {localeNames[locale as keyof typeof localeNames]}
+              </option>
+            ))}
+          </select>
+        </div>
 
-        <label htmlFor="backLanguage">Back Language:</label>
-        <select
-          id="backLanguage"
-          value={backLanguage}
-          onChange={(e) => setBackLanguage(e.target.value)}
-          className="border border-gray-300 p-2 rounded-md shadow-sm"
-        >
-          {locales.map((locale) => (
-            <option key={locale} value={locale}>
-              {localeNames[locale as keyof typeof localeNames]}
-            </option>
-          ))}
-        </select>
+        <div className="flex flex-col md:flex-row gap-4 items-center justify-start">
+          {" "}
+          <label htmlFor="backLanguage">Back Language:</label>
+          <select
+            id="backLanguage"
+            value={backLanguage}
+            onChange={(e) => setBackLanguage(e.target.value)}
+            className="border border-gray-300 p-2 rounded-md shadow-sm"
+          >
+            {locales.map((locale) => (
+              <option key={locale} value={locale}>
+                {localeNames[locale as keyof typeof localeNames]}
+              </option>
+            ))}
+          </select>
+        </div>
       </div>
       <div className="my-6">
         <ul>

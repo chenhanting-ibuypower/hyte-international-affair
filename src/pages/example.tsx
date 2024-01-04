@@ -7,7 +7,7 @@ export const getServerSideProps = () => {
   };
 };
 
-export default function Home({ id }: { id: number }) {
+export default function Example({ id }: { id: number }) {
   console.log("Home component, ID:", id);
   return (
     <div>
