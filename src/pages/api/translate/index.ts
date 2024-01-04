@@ -93,14 +93,12 @@ export default async function handler(
           message: "Documents inserted",
           insertedCount: result.insertedCount,
         });
-
-        return res.status(200).json({});
       } catch (error) {
         return res.status(500).json({ error: "Server error" });
       }
 
     default:
-      res.setHeader("Allow", ["POST"]);
-      res.status(405).end(`Method ${method} Not Allowed`);
+      res.setHeader("Allow", ["GET", "POST"]);
+      return res.status(405).end(`Method ${method} Not Allowed`);
   }
 }
