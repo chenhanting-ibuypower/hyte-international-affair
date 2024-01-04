@@ -34,6 +34,7 @@ const FeedbackTable: React.FC<FeedbackTableProps> = ({ data }) => {
 
   const handleIconClick = async (id: string) => {
     console.log("current_id:", id);
+    
     // Make a request to your API endpoint to update the MongoDB instance
     // const response = await fetch(`/api/updateFeedback/${id}`, {
     //   method: "POST",

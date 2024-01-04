@@ -1,3 +1,5 @@
+"use client";
+
 import React from "react";
 import Script from "next/script";
 import { useEffect } from "react";
@@ -64,7 +66,14 @@ const Zonos = () => {
   }, []);
 
   return (
-    <>
+    <div
+      style={{
+        display: "flex",
+        justifyContent: "center",
+        alignItems: "center",
+        height: "100vh",
+      }}
+    >
       <Script
         src="https://hello.zonos.com/hello.js?siteKey=1CA619FA79U68"
         onLoad={() => {
@@ -75,16 +84,17 @@ const Zonos = () => {
         }
         onReady={() => console.log("Zonos's Hello Script is ready")}
       ></Script>
-      <div>
-        <h1>Welcome to the Zonos page!</h1>
+      <div style={{ padding: "20px" }} className="bg-blue-100">
+        <h1 style={{ color: "black" }}>Welcome to the Zonos page!</h1>
         <button
           id="delivery-button"
           className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
+          style={{ marginTop: "10px" }}
         >
           Delivery Page
         </button>
       </div>
-    </>
+    </div>
   );
 };
 
