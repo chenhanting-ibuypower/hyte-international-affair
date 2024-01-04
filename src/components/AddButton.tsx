@@ -1,41 +1,9 @@
 import axios from "axios";
 import React, { useState } from "react";
 import { TrashIcon } from "@heroicons/react/24/outline"; // New import path for v2
+import { localeNames, locales } from "../constants/project";
 
-// "en-US", "en-GB", "es", "de", "fr", "pl", "it", "nl", "ko", "ja", "zh-TW", "zh-CN", and Portuguese ("pt")
-const localeNames = {
-  "en-US": "English (United States)",
-  "en-GB": "English (United Kingdom)",
-  es: "Spanish",
-  de: "German",
-  fr: "French",
-  pl: "Polish",
-  it: "Italian",
-  nl: "Dutch",
-  ko: "Korean",
-  ja: "Japanese",
-  "zh-TW": "Chinese (Traditional)",
-  "zh-CN": "Chinese (Simplified)",
-  pt: "Portuguese",
-};
-
-const locales = [
-  "en-US",
-  "en-GB",
-  "es",
-  "de",
-  "fr",
-  "pl",
-  "it",
-  "nl",
-  "ko",
-  "ja",
-  "zh-TW",
-  "zh-CN",
-  "pt",
-];
-
-const TranslationInputList = ({ onAdd }: { onAdd: any }) => {
+const TranslationInputList = ({ reload }: { reload: () => void }) => {
   const [rows, setRows] = useState([{ value: "" }]);
   const [locale, setLocale] = useState("en-US");
   const [backLanguage, setBackLanguage] = useState("en-US");
@@ -82,14 +50,13 @@ const TranslationInputList = ({ onAdd }: { onAdd: any }) => {
         });
 
         console.log(insertedContent);
-
-        onAdd(res.data);
       })
       .catch((err) => {
         console.log(err);
       })
       .finally(() => {
         setIsProcessing(false);
+        reload();
       });
   };
 

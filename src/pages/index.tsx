@@ -3,7 +3,13 @@ import FeedbackTable from "../components/FeedbackTable";
 import AddButton from "../components/AddButton";
 import Pagination from "../components/Pagination";
 
-const IndexPage = ({ translations }: { translations?: Array<object> }) => {
+const IndexPage = ({
+  translations,
+  reload,
+}: {
+  translations?: Array<object>;
+  reload: () => void;
+}) => {
   console.log("📕 (Client Side):", translations);
   const [feedbackData, setFeedbackData] = useState([]);
   const [_, setEndIndex] = useState(0);
@@ -12,8 +18,6 @@ const IndexPage = ({ translations }: { translations?: Array<object> }) => {
   const [currentPage, setCurrentPage] = useState(1);
 
   const handlePageChange = (pageNumber: number) => {
-    // Update the current page here
-    console.log("Current Page:", pageNumber);
     // Add your logic to update the current page
     setCurrentPage(pageNumber);
   };
@@ -23,7 +27,7 @@ const IndexPage = ({ translations }: { translations?: Array<object> }) => {
       const response = await fetch(`/api/translate?page=${pageNumber}`);
       const data = await response.json();
       console.log("📕 (API):", data);
-      
+
       setFeedbackData(data.documents);
       setEndIndex(data.endIndex);
       setTotalPages(data.totalPages);
@@ -39,8 +43,11 @@ const IndexPage = ({ translations }: { translations?: Array<object> }) => {
 
   return (
     <div className="container">
-      <AddButton onAdd={() => {}} />
-      <FeedbackTable data={feedbackData} />
+      <AddButton reload={() => fetchData(currentPage)} />
+      <FeedbackTable
+        data={feedbackData}
+        reload={() => fetchData(currentPage)}
+      />
       <Pagination
         itemsPerPage={10}
         totalItems={totalDocuments}

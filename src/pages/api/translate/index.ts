@@ -21,21 +21,15 @@ export default async function handler(
 
         await client.connect();
         const collection = client.db("localization").collection("translations");
-
-        console.log("📃 Check the collection:", collection);
-
         const totalDocuments = await collection.countDocuments();
         const totalPages = Math.ceil(totalDocuments / Number(limit));
 
         const documents = await collection
-          .find({})
+          .find({ quality: { $ne: "", $exists: false } })
           .sort({ _id: -1 })
           .skip(startIndex)
           .limit(Number(limit))
           .toArray();
-
-        console.log("🖊️ The documents are:", documents);
-
         return res
           .status(200)
           .json({ documents, endIndex, totalPages, totalDocuments });

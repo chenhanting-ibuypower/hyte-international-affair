@@ -9,6 +9,31 @@ export default async function handler(
   const { method } = req;
 
   switch (method) {
+    case "DELETE":
+      try {
+        const { id } = req.query;
+
+        const client = new MongoClient(
+          process.env.COSMOSDB_CONNECTION_STRING as string
+        );
+        const collection = client.db("localization").collection("translations");
+        const documents = await collection
+          .find({ _id: new ObjectId(id as string) })
+          .toArray();
+
+        if (documents.length === 0) {
+          return res.status(404).json({ error: "Not found" });
+        }
+
+        const { _id } = documents[0];
+
+        await collection.deleteOne({ _id });
+
+        return res.status(204).end();
+      } catch (error) {
+        return res.status(500).json({ error: "Server error" });
+      }
+
     case "POST":
       try {
         const { id } = req.query;
@@ -17,6 +42,12 @@ export default async function handler(
         if (!quality) {
           return res.status(400).json({
             error: "The quality is required",
+          });
+        }
+
+        if (!suggestion && quality <= 7) {
+          return res.status(400).json({
+            error: "The suggestion is required",
           });
         }
 
@@ -59,7 +90,7 @@ export default async function handler(
       }
 
     default:
-      res.setHeader("Allow", ["POST"]);
+      res.setHeader("Allow", ["POST", "DELETE"]);
       res.status(405).end(`Method ${method} Not Allowed`);
   }
 }

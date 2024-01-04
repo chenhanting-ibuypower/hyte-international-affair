@@ -1,6 +1,7 @@
 import axios from "axios";
 import React, { useState } from "react";
-import { PaperAirplaneIcon } from "@heroicons/react/24/outline"; // New import path for v2
+import { PaperAirplaneIcon, TrashIcon } from "@heroicons/react/24/outline"; // New import path for v2
+import { localeNames, locales } from "../constants/project";
 
 type FeedbackTableProps = {
   data: {
@@ -13,9 +14,10 @@ type FeedbackTableProps = {
     quality?: string; // optional if not always present
     suggestion?: string; // optional if not always present
   }[];
+  reload: () => void;
 };
 
-const FeedbackTable: React.FC<FeedbackTableProps> = ({ data }) => {
+const FeedbackTable: React.FC<FeedbackTableProps> = ({ data, reload }) => {
   const [selectedQualities, setSelectedQuality] = useState(
     data.reduce((acc, row) => {
       // @ts-ignore
@@ -31,21 +33,53 @@ const FeedbackTable: React.FC<FeedbackTableProps> = ({ data }) => {
     }, {})
   );
 
+  const handleIconDelete = async (id: string) => {
+    // Make a request to your API endpoint to update the MongoDB instance
+    try {
+      const response = await axios.delete(`/api/translate/${id}`);
+      // Handle response
+      console.log("Response:", response);
+    } catch (error) {
+      console.error("Error deleting feedback:", error);
+      alert("Error deleting feedback");
+    } finally {
+      // Reload the page
+      reload();
+    }
+  };
+
   const handleIconClick = async (id: string) => {
     console.log("current_id:", id);
+    // @ts-ignore
+    const quality = selectedQualities[id];
+    // @ts-ignore
+    const suggestion = suggestions[id];
+
+    if (!quality) {
+      return alert("Please select a quality rating");
+    }
+
+    if (!suggestion && quality <= 7) {
+      return alert("Please provide a suggestion");
+    }
 
     // Make a request to your API endpoint to update the MongoDB instance
     try {
+      console.log({ quality, suggestion, path: `/api/translate/${id}` });
       const response = await axios.post(`/api/translate/${id}`, {
         // @ts-ignore
-        quality: selectedQualities[id],
+        quality,
         // @ts-ignore
-        suggestion: suggestions[id],
+        suggestion,
       });
       // Handle response
       console.log("Response:", response);
     } catch (error) {
       console.error("Error updating feedback:", error);
+      alert("Error updating feedback");
+    } finally {
+      // Reload the page
+      reload();
     }
   };
 
@@ -159,7 +193,13 @@ const FeedbackTable: React.FC<FeedbackTableProps> = ({ data }) => {
                 >
                   <pre>{row.original}</pre>
                 </td>
-                <td className="cell">{row.to}</td>
+
+                <td className="cell">
+                  {
+                    // @ts-ignore
+                    localeNames[row.to as keyof LocaleNames as string]
+                  }
+                </td>
                 <td
                   className="cell rounded-bl-lg max-w-xs break-words"
                   style={{ maxWidth: "600px" }}
@@ -174,8 +214,10 @@ const FeedbackTable: React.FC<FeedbackTableProps> = ({ data }) => {
                 </td>
                 <td>
                   <select
-                    // @ts-ignore
-                    value={data.find((d) => d._id === row._id).quality}
+                    defaultValue={
+                      // @ts-ignore
+                      data.find((d) => d._id === row._id).quality || ""
+                    }
                     onChange={(e) =>
                       setSelectedQuality({
                         ...selectedQualities,
@@ -183,6 +225,7 @@ const FeedbackTable: React.FC<FeedbackTableProps> = ({ data }) => {
                       })
                     }
                   >
+                    <option value="">Not Selected</option>
                     {[...Array(10)].map((_, i) => (
                       <option key={i} value={i + 1}>
                         {i + 1}
@@ -192,8 +235,10 @@ const FeedbackTable: React.FC<FeedbackTableProps> = ({ data }) => {
                 </td>
                 <td className="cell">
                   <textarea
-                    // @ts-ignore
-                    value={data.find((d) => d._id === row._id).suggestion}
+                    defaultValue={
+                      // @ts-ignore
+                      data.find((d) => d._id === row._id).suggestion
+                    }
                     className="w-full px-2 py-1 border border-gray-300 rounded-md"
                     onChange={(e) =>
                       setSuggestion({
@@ -209,6 +254,12 @@ const FeedbackTable: React.FC<FeedbackTableProps> = ({ data }) => {
                     onClick={() => handleIconClick(row._id)}
                   >
                     <PaperAirplaneIcon className="h-5 w-5" />
+                  </button>
+                  <button
+                    className="edit-button"
+                    onClick={() => handleIconDelete(row._id)}
+                  >
+                    <TrashIcon className="h-5 w-5" />
                   </button>
                 </td>
               </tr>
