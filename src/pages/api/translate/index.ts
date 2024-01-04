@@ -127,7 +127,7 @@ const scoredSuggestionToSentence = (instance: any) => {
   }
 
   return {
-    role: "system",
+    role: "user",
     content: content,
   };
 };

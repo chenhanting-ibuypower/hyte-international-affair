@@ -40,6 +40,7 @@ const TranslationInputList = ({ reload }: { reload: () => void }) => {
       })
       .then(async (res) => {
         const payload = res.data;
+        console.log("📕 Payload for back-translation:", payload);
 
         const { data: insertedContent } = await axios.post("/api/translate", {
           locale,
