@@ -144,7 +144,7 @@ const FeedbackTable: React.FC<FeedbackTableProps> = ({ data }) => {
               <th className="header rounded-tl-lg">Original Context</th>
               <th className="header">Target Language</th>
               <th className="header">Translated Context</th>
-              <th className="header">BackTranslation</th>
+              <th className="header">Back Translation</th>
               <th className="header">Quality</th>
               <th className="header">Suggestion</th>
               <th className="header rounded-tr-lg">Actions</th>
