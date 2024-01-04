@@ -1,3 +1,4 @@
+import axios from "axios";
 import React, { useState } from "react";
 import { PaperAirplaneIcon } from "@heroicons/react/24/outline"; // New import path for v2
 
@@ -15,14 +16,14 @@ type FeedbackTableProps = {
 };
 
 const FeedbackTable: React.FC<FeedbackTableProps> = ({ data }) => {
-  const [selectedQuality, setSelectedQuality] = useState(
+  const [selectedQualities, setSelectedQuality] = useState(
     data.reduce((acc, row) => {
       // @ts-ignore
       acc[row._id] = row.quality;
       return acc;
     }, {})
   );
-  const [suggestion, setSuggestion] = useState(
+  const [suggestions, setSuggestion] = useState(
     data.reduce((acc, row) => {
       // @ts-ignore
       acc[row._id] = row.suggestion;
@@ -30,21 +31,22 @@ const FeedbackTable: React.FC<FeedbackTableProps> = ({ data }) => {
     }, {})
   );
 
-  console.log("📝 suggestion", suggestion);
-
   const handleIconClick = async (id: string) => {
     console.log("current_id:", id);
-    
-    // Make a request to your API endpoint to update the MongoDB instance
-    // const response = await fetch(`/api/updateFeedback/${id}`, {
-    //   method: "POST",
-    //   headers: { "Content-Type": "application/json" },
-    //   body: JSON.stringify({ quality: selectedQuality, suggestion }),
-    // });
 
-    // if (!response.ok) {
-    //   console.error("Error updating feedback");
-    // }
+    // Make a request to your API endpoint to update the MongoDB instance
+    try {
+      const response = await axios.post(`/api/translate/${id}`, {
+        // @ts-ignore
+        quality: selectedQualities[id],
+        // @ts-ignore
+        suggestion: suggestions[id],
+      });
+      // Handle response
+      console.log("Response:", response);
+    } catch (error) {
+      console.error("Error updating feedback:", error);
+    }
   };
 
   return (
@@ -173,7 +175,13 @@ const FeedbackTable: React.FC<FeedbackTableProps> = ({ data }) => {
                 <td>
                   <select
                     // @ts-ignore
-                    value={selectedQuality[row._id]}
+                    value={data.find((d) => d._id === row._id).quality}
+                    onChange={(e) =>
+                      setSelectedQuality({
+                        ...selectedQualities,
+                        [row._id]: e.target.value,
+                      })
+                    }
                   >
                     {[...Array(10)].map((_, i) => (
                       <option key={i} value={i + 1}>
@@ -183,11 +191,16 @@ const FeedbackTable: React.FC<FeedbackTableProps> = ({ data }) => {
                   </select>
                 </td>
                 <td className="cell">
-                  <input
-                    type="text"
+                  <textarea
                     // @ts-ignore
-                    value={suggestion[row._id] || ""}
+                    value={data.find((d) => d._id === row._id).suggestion}
                     className="w-full px-2 py-1 border border-gray-300 rounded-md"
+                    onChange={(e) =>
+                      setSuggestion({
+                        ...suggestions,
+                        [row._id]: e.target.value,
+                      })
+                    }
                   />
                 </td>
                 <td className="cell text-right rounded-br-lg">
