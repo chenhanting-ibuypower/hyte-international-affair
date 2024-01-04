@@ -5,7 +5,7 @@ type Repo = {
   stargazers_count: number;
 };
 
-export const getRepo = async () => {
+const getRepo = async () => {
   // Fetch data from external API
   const res = await fetch("https://api.github.com/repos/vercel/next.js");
   const repo: Repo = await res.json();
