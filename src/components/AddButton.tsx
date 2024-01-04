@@ -125,12 +125,12 @@ const TranslationInputList = ({ onAdd }: { onAdd: any }) => {
   };
   return (
     <div className="max-w-3xl mx-auto py-8">
-      <div className="flex flex-col gap-4 items-center md:flex-row md:justify-between">
-        <div className="flex flex-col md:flex-row gap-4 items-center justify-end w-full">
+      <div className="flex flex-col gap-4 items-center md:justify-between">
+        <div className="flex flex-col md:flex-row gap-4 items-start justify-end w-full">
           {" "}
           <button
             onClick={addRow}
-            className="mb-4 px-4 py-2 bg-blue-500 text-white font-semibold rounded-md hover:bg-blue-600 transition duration-300"
+            className="px-4 py-2 bg-blue-500 text-white font-semibold rounded-md hover:bg-blue-600 transition duration-300"
           >
             ADD
           </button>
