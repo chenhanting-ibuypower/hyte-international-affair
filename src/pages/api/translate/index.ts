@@ -31,6 +31,17 @@ export default async function handler(
           .skip(startIndex)
           .limit(Number(limit))
           .toArray();
+
+        if (scored) {
+          return res.status(200).json({
+            documents,
+            endIndex,
+            totalPages,
+            totalDocuments,
+            systemMessages: scoredSuggestionToSentences(documents),
+          });
+        }
+
         return res
           .status(200)
           .json({ documents, endIndex, totalPages, totalDocuments });
@@ -84,7 +95,7 @@ export default async function handler(
 
         const result = await collection.insertMany(instances);
 
-        res.status(200).json({
+        return res.status(200).json({
           message: "Documents inserted",
           insertedCount: result.insertedCount,
         });
@@ -97,3 +108,15 @@ export default async function handler(
       return res.status(405).end(`Method ${method} Not Allowed`);
   }
 }
+
+const scoredSuggestionToSentences = (instances: any[]) => {
+  return instances.map(scoredSuggestionToSentence);
+};
+
+const scoredSuggestionToSentence = (instance: any) => {
+  const { original, translatedText, to, suggestion, quality } = instance;
+  return {
+    role: "system",
+    content: `The ${to} translation for "${original}"(${translatedText}) has a quality score of ${quality} out of 10 with the following suggestion: ${suggestion}. `,
+  };
+};
