@@ -116,8 +116,18 @@ const scoredSuggestionToSentences = (instances: any[]) => {
 
 const scoredSuggestionToSentence = (instance: any) => {
   const { original, translatedText, to, suggestion, quality } = instance;
+
+  let content = `For the translation from English to ${to}, the phrase "${original}" was rendered as "${translatedText}". This translation has been given a quality rating of ${quality}/10.`;
+
+  if (suggestion) {
+    content += ` Immediate attention is required: "${suggestion}". Please review and action promptly to enhance the translation quality.`;
+  } else {
+    content +=
+      " It's crucial to review this translation to ensure it meets our quality standards.";
+  }
+
   return {
     role: "system",
-    content: `The ${to} translation for "${original}"(${translatedText}) has a quality score of ${quality} out of 10 with the following suggestion: ${suggestion}. `,
+    content: content,
   };
 };
