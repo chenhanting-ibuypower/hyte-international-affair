@@ -13,6 +13,7 @@ export default async function handler(
         const client = new MongoClient(
           process.env.COSMOSDB_CONNECTION_STRING as string
         );
+        const scored = req.query.scored === "true";
 
         const { page = 1, limit = 10 } = req.query;
         const startIndex = (Number(page) - 1) * Number(limit);
@@ -25,7 +26,7 @@ export default async function handler(
         const totalPages = Math.ceil(totalDocuments / Number(limit));
 
         const documents = await collection
-          .find({ quality: { $ne: "", $exists: false } })
+          .find({ quality: { $ne: "", $exists: scored } })
           .sort({ _id: -1 })
           .skip(startIndex)
           .limit(Number(limit))
