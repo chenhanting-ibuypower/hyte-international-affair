@@ -116,7 +116,6 @@ const scoredSuggestionToSentences = (instances: any[]) => {
 
 const scoredSuggestionToSentence = (instance: any) => {
   const { original, translatedText, to, suggestion, quality } = instance;
-
   let content = `For the translation from English to ${to}, the phrase "${original}" was rendered as "${translatedText}". This translation has been given a quality rating of ${quality}/10.`;
 
   if (suggestion) {
