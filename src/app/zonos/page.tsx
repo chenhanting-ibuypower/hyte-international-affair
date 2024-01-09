@@ -1,7 +1,6 @@
 "use client";
 
 import React from "react";
-import Script from "next/script";
 import { useEffect } from "react";
 
 const Zonos = () => {
@@ -29,13 +28,16 @@ const Zonos = () => {
 
       if (!zonosScript) {
         const script = document.createElement("script");
-        script.src = `https://js.zonos.com/dist/scripts/loadZonos.js?timestamp=${timestamp}`;
+        script.src = `https://alpha.js.zonos.com/dist/scripts/loadZonos.js?timestamp=${timestamp}`;
         script.addEventListener(
           "load",
           () => {
             console.log("🌎 Zonos loaded");
             // @ts-ignore
             window.Zonos.init({
+              helloSettings: {
+                anchorElementSelector: "#hello-anchor", // Replace with your actual anchor element selector
+              },
               checkoutSettings: {
                 placeOrderButtonSelector: "#delivery-button", // Replace with your actual checkout button selector
                 /**
@@ -74,16 +76,7 @@ const Zonos = () => {
         height: "100vh",
       }}
     >
-      <Script
-        src="https://hello.zonos.com/hello.js?siteKey=1CA619FA79U68"
-        onLoad={() => {
-          console.log("Zonos's Hello Script has loaded");
-        }}
-        onError={() =>
-          console.log("Zonos's Hello Script has encountered an error")
-        }
-        onReady={() => console.log("Zonos's Hello Script is ready")}
-      ></Script>
+      <div id="hello-anchor" />
       <div style={{ padding: "20px" }} className="bg-blue-100">
         <h1 style={{ color: "black" }}>Welcome to the Zonos page!</h1>
         <button
