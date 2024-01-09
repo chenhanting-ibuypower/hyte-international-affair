@@ -62,7 +62,7 @@ const Zonos = () => {
           },
           false
         );
-        document.head.appendChild(script);
+        document.body.appendChild(script);
       }
     })();
   }, []);
