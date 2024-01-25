@@ -18,8 +18,17 @@ const IndexPage = ({ translations }: { translations?: Array<object> }) => {
           alignItems: "center",
         }}
       >
-        <img src="/furiren.JPG" alt="Furiren" />
-        <h1 className="absolute text-[60px]" style={{ bottom: "20px" }}>
+        <style jsx>{`
+          .responsive-image {
+            width: 100%;
+            height: auto;
+          }
+        `}</style>
+        <img src="/furiren.JPG" alt="Furiren" className="responsive-image" />
+        <h1
+          className="absolute text-[20px] sm:text-[40px] md:text-[60px]"
+          style={{ bottom: "20px" }}
+        >
           You don't have access to that page
         </h1>
       </div>
