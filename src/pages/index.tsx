@@ -35,7 +35,7 @@ const IndexPage = ({ translations }: { translations?: Array<object> }) => {
             className="absolute text-[20px] sm:text-[40px] md:text-[60px]"
             style={{ bottom: "20px" }}
           >
-            You don't have access to that page
+            You don't have access to this page
           </h1>
         </div>
       </>
