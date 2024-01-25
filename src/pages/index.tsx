@@ -3,35 +3,42 @@ import FeedbackTable from "../components/FeedbackTable";
 import AddButton from "../components/AddButton";
 import Pagination from "../components/Pagination";
 import { useRouter } from "next/router";
+import Head from "next/head";
 
 const IndexPage = ({ translations }: { translations?: Array<object> }) => {
   const router = useRouter();
   const { passcode } = router.query;
   if (passcode !== "hyte888!") {
     return (
-      <div
-        className="full-width relative"
-        style={{
-          display: "flex",
-          justifyContent: "center",
-          flexDirection: "column",
-          alignItems: "center",
-        }}
-      >
-        <style jsx>{`
-          .responsive-image {
-            width: 100%;
-            height: auto;
-          }
-        `}</style>
-        <img src="/furiren.JPG" alt="Furiren" className="responsive-image" />
-        <h1
-          className="absolute text-[20px] sm:text-[40px] md:text-[60px]"
-          style={{ bottom: "20px" }}
+      <>
+        <Head>
+          <meta property="og:image" content="/furiren.JPG" />
+          <meta name="twitter:image" content="/furiren.JPG" />
+        </Head>
+        <div
+          className="full-width relative"
+          style={{
+            display: "flex",
+            justifyContent: "center",
+            flexDirection: "column",
+            alignItems: "center",
+          }}
         >
-          You don't have access to that page
-        </h1>
-      </div>
+          <style jsx>{`
+            .responsive-image {
+              width: 100%;
+              height: auto;
+            }
+          `}</style>
+          <img src="/furiren.JPG" alt="Furiren" className="responsive-image" />
+          <h1
+            className="absolute text-[20px] sm:text-[40px] md:text-[60px]"
+            style={{ bottom: "20px" }}
+          >
+            You don't have access to that page
+          </h1>
+        </div>
+      </>
     );
   }
   console.log("📕 (Client Side):", translations);
