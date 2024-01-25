@@ -2,8 +2,29 @@ import React, { useState, useEffect } from "react";
 import FeedbackTable from "../components/FeedbackTable";
 import AddButton from "../components/AddButton";
 import Pagination from "../components/Pagination";
+import { useRouter } from "next/router";
 
 const IndexPage = ({ translations }: { translations?: Array<object> }) => {
+  const router = useRouter();
+  const { passcode } = router.query;
+  if (passcode !== "hyte888!") {
+    return (
+      <div
+        className="full-width relative"
+        style={{
+          display: "flex",
+          justifyContent: "center",
+          flexDirection: "column",
+          alignItems: "center",
+        }}
+      >
+        <img src="/furiren.JPG" alt="Furiren" />
+        <h1 className="absolute text-[60px]" style={{ bottom: "20px" }}>
+          You don't have access to that page
+        </h1>
+      </div>
+    );
+  }
   console.log("📕 (Client Side):", translations);
   const [feedbackData, setFeedbackData] = useState([]);
   const [_, setEndIndex] = useState(0);
