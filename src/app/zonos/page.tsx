@@ -8,7 +8,7 @@ const Zonos = () => {
   useEffect(() => {
     (async function () {
       const timestamp = new Date().getTime();
-      const zonosScript = document.querySelector(`script[src*="/js/zonos.js"]`);
+      const zonosScript = document.querySelector(`script[src*="/scripts/loadZonos.js"]`);
 
       let zonosItems = [
         {
@@ -55,7 +55,7 @@ const Zonos = () => {
                 },
               },
               zonosApiKey:
-                "credential_test_4c7fb1ab-054d-4b5f-9a22-7b0228905489",
+                "credential_live_deeaf15f-060d-4d84-ba5f-01e590f6d1b7",
             });
           },
           false
