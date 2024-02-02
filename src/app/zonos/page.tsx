@@ -8,26 +8,31 @@ const Zonos = () => {
   useEffect(() => {
     (async function () {
       const timestamp = new Date().getTime();
-      const zonosScript = document.querySelector(`script[src*="/scripts/loadZonos.js"]`);
+      const zonosScript = document.querySelector(
+        `script[src*="/scripts/loadZonos.js"]`
+      );
 
       let zonosItems = [
         {
-          amount: 10.99,
-          currencyCode: "USD",
+          amount: 1,
+          currencyCode: "TWD",
           imageUrl: "https://example.com/image1.jpg",
           name: "Product 1",
           quantity: 2,
         },
         {
-          amount: 19.99,
-          currencyCode: "USD",
+          amount: 1,
+          currencyCode: "TWD",
           imageUrl: "https://example.com/image2.jpg",
           name: "Product 2",
           quantity: 1,
         },
       ];
 
+      console.log("🌎 Check zonosScript loaded:", !!zonosScript);
+
       if (!zonosScript) {
+        console.log("🌎 Zonos script not loaded, loading now ...");
         const script = document.createElement("script");
         script.src = `https://js.zonos.com/dist/scripts/loadZonos.js?timestamp=${timestamp}`;
         script.addEventListener(
