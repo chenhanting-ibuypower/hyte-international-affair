@@ -14,15 +14,15 @@ const Zonos = () => {
 
       let zonosItems = [
         {
-          amount: 1,
-          currencyCode: "NTD",
+          amount: 0.5,
+          currencyCode: "USD",
           imageUrl: "https://example.com/image1.jpg",
           name: "Product 1",
           quantity: 2,
         },
         {
-          amount: 1,
-          currencyCode: "NTD",
+          amount: 0.5,
+          currencyCode: "USD",
           imageUrl: "https://example.com/image2.jpg",
           name: "Product 2",
           quantity: 1,
