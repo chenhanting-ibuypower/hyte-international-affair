@@ -57,17 +57,6 @@ const Zonos = () => {
             window.Zonos.init({
               checkoutSettings: {
                 placeOrderButtonSelector: "#delivery-button", // Replace with your actual checkout button selector
-                /**
-                 * Cart info callback for checkout
-                 * If the productId is passed in
-                 * @returns {object[]} - object with the item info to be added to cart:
-                 * - amount: number;
-                 * - currencyCode: string;
-                 * - description?: string;
-                 * - imageUrl?: string;
-                 * - name: string;
-                 * - quantity: number;
-                 */
                 buildCartDetail: async () => {
                   // Please provide an array of items to be added to cart
                   return zonosItems;
