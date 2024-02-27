@@ -18,13 +18,15 @@ const Zonos = () => {
           currencyCode: "USD",
           imageUrl: "https://example.com/image1.jpg",
           name: "Product 1",
+          sku: "SKU1",
           quantity: 2,
         },
         {
           amount: 1,
           currencyCode: "USD",
           imageUrl: "https://example.com/image2.jpg",
-          name: "Product 2",
+          name: "Route Insurance",
+          sku: "ROUTEINS",
           quantity: 1,
         },
         {
